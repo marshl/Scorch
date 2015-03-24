@@ -1,0 +1,6 @@
+syntax: glob
+*.png
+Temp/
+Library/
+Builds/
+*.asset
