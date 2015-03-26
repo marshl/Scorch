@@ -49,6 +49,9 @@
      <Compile Include="Assets\Scripts\CameraDragger.cs" />
      <Compile Include="Assets\Scripts\HexTest.cs" />
      <Compile Include="Assets\Scripts\HexTile.cs" />
+     <Compile Include="Assets\Scripts\ScorchSim.cs" />
+     <Compile Include="Assets\Scripts\TerrainContainer.cs" />
+     <Compile Include="Assets\Scripts\TerrainTile.cs" />
  <Reference Include="UnityEngine.UI">
  <HintPath>C:/Program Files (x86)/Unity/Editor/Data/UnityExtensions/Unity/GUISystem/4.6.1/UnityEngine.UI.dll</HintPath>
  </Reference>
