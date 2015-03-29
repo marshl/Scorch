@@ -10,6 +10,8 @@ GameObject:
   - 4: {fileID: 427464}
   - 212: {fileID: 21227464}
   - 114: {fileID: 11488328}
+  - 114: {fileID: 11473726}
+  - 114: {fileID: 11459996}
   m_Layer: 0
   m_Name: HexagonSprite
   m_TagString: Untagged
@@ -29,6 +31,35 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
+--- !u!114 &11459996
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 127464}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0deeb6719b1bbcc4eb19d090770867c0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  highlightPrefab: {fileID: 159406, guid: af865ab9ab940d24f91969000dc0c43d, type: 2}
+  fireOverlayPrefab: {fileID: 105856, guid: 480ae26170cd5494a9b309b87793c07a, type: 2}
+--- !u!114 &11473726
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 127464}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 186c4bcfb5c7b154cb5f5d539be91466, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hexTile: {fileID: 11488328}
+  fuelLoad: 0
+  fireLevel: 0
+  tempFireLevel: 0
+  fireTruck: {fileID: 0}
 --- !u!114 &11488328
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -40,12 +71,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fb8f7bd5e53159c4eb85fcb8b3e4d75c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  highlightPrefab: {fileID: 159406, guid: af865ab9ab940d24f91969000dc0c43d, type: 2}
-  fireOverlayPrefab: {fileID: 105856, guid: 480ae26170cd5494a9b309b87793c07a, type: 2}
   x: 0
   y: 0
-  terrainData: {fileID: 0}
-  isHighlighted: 0
+  terrainData: {fileID: 11473726}
+  tileOverlay: {fileID: 11459996}
 --- !u!212 &21227464
 SpriteRenderer:
   m_ObjectHideFlags: 1

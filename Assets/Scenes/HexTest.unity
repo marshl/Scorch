@@ -102,6 +102,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   terrainManager: {fileID: 2132202991}
+  selfIgnitingStage: 3
+  spreadableFireStage: 6
+  maximumInfernoStage: 10
   selectedTile: {fileID: 0}
   tile2: {fileID: 0}
   b: 0
@@ -255,6 +258,7 @@ MonoBehaviour:
   displayHeight: 10
   scale: 1.27999997
   hexagonPrefab: {fileID: 127464, guid: e308bde9b0a75c24381f8ce63a1ad104, type: 2}
+  availableTiles: []
 --- !u!4 &2132202992
 Transform:
   m_ObjectHideFlags: 0

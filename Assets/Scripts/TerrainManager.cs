@@ -15,7 +15,7 @@ public class TerrainManager : MonoBehaviour {
 
     public GameObject hexagonPrefab;
 
-    private List<HexTile> availableTiles;
+    public List<HexTile> availableTiles;
 
     private void Start()
     {

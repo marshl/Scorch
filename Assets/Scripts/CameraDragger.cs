@@ -105,6 +105,14 @@ public class CameraDragger : MonoBehaviour
         }
     }
 
+    private void OnGUI()
+    {
+        if ( GUI.Button( new Rect( 0, Screen.height *0.8f, Screen.width, Screen.height * 0.2f), "Stimulate Fire") )
+        {
+            this.simManager.RunEnvironmentSimulation();
+        }
+    }
+
     private void OnMouseClickEvent()
     {
         Vector3 translatedPosition = this.camera.ScreenToWorldPoint( Input.mousePosition );

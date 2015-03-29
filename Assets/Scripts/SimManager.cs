@@ -1,11 +1,15 @@
 ﻿using UnityEngine;
 using System.Collections;
-using System;
 using System.Collections.Generic;
 
 public class SimManager : MonoBehaviour
 {
     public TerrainManager terrainManager;
+
+    public HexTile.CELL_DIRECTION? windDirection = null;
+    public int selfIgnitingStage;
+    public int spreadableFireStage;
+    public int maximumInfernoStage;
 
     public HexTile selectedTile;
     public HexTile tile2;
@@ -51,7 +55,79 @@ public class SimManager : MonoBehaviour
 
     public void RunEnvironmentSimulation()
     {
-        //foreach ( )
+        int randIndex = Random.Range( 0, terrainManager.availableTiles.Count );
+        terrainManager.availableTiles[randIndex].terrainData.fireLevel++;
+
+        foreach ( HexTile tile in terrainManager.availableTiles )
+        {
+            TerrainData terrain = tile.terrainData;
+            if ( this.IsTerrainPristine( terrain ) )
+                continue;
+
+            if ( this.IsTerrainSelfIgniting( terrain ) )
+            {
+                this.IncreaseFireLevel( terrain );
+            }
+
+            if ( this.IsTerrainFireSpreadable( terrain ) )
+            {
+                this.SpreadFire( terrain );
+            }
+        }
+    }
+
+    public bool IsTerrainPristine( TerrainData _terrain )
+    {
+        return _terrain.fireLevel <= 0;
+    }
+
+    public bool IsTerrainSelfIgniting( TerrainData _terrain )
+    {
+        return _terrain.fireLevel >= this.selfIgnitingStage;
+    }
+
+    public bool IsTerrainFireSpreadable( TerrainData _terrain )
+    {
+        return _terrain.fireLevel >= this.spreadableFireStage;
+    }
+
+    public void IncreaseFireLevel( TerrainData _terrain )
+    {
+        _terrain.fireLevel = Mathf.Min( _terrain.fireLevel + 1, this.maximumInfernoStage );
+
+        _terrain.hexTile.tileOverlay.SetFireOverlay( this.FireLevelToDisplayTier( _terrain.fireLevel ) );
+    }
+
+    public void SpreadFire( TerrainData _terrain )
+    {
+        HexTile.CELL_DIRECTION windDirection = this.windDirection == null
+              ? HexTile.GetRandomDirection() : this.windDirection.Value;
+
+        if ( !_terrain.hexTile.neighbourMap.ContainsKey( windDirection ) )
+            return;
+
+        TerrainData t = _terrain.hexTile.neighbourMap[windDirection].terrainData;
+        this.IncreaseFireLevel( t );
+    }
+
+    public TileOverlay.FIRE_DISPLAY_TIER FireLevelToDisplayTier( int _fireLevel )
+    {
+        if ( _fireLevel <= 0 )
+        {
+            return TileOverlay.FIRE_DISPLAY_TIER.NO_FIRE;
+        }
+        else if ( _fireLevel < this.selfIgnitingStage )
+        {
+            return TileOverlay.FIRE_DISPLAY_TIER.FIRE_TIER_1;
+        }
+        else if ( _fireLevel < this.spreadableFireStage )
+        {
+            return TileOverlay.FIRE_DISPLAY_TIER.FIRE_TIER_2;
+        }
+        else
+        {
+            return TileOverlay.FIRE_DISPLAY_TIER.FIRE_TIER_3;
+        }
     }
 }
 

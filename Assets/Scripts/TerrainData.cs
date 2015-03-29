@@ -3,6 +3,7 @@ using System.Collections;
 
 public class TerrainData : MonoBehaviour
 {
+    public HexTile hexTile;
     public enum TERRAIN_TYPE
     {
         PATH,
@@ -11,15 +12,9 @@ public class TerrainData : MonoBehaviour
         FOREST,
     };
 
-    public enum FIRE_TIER
-    {
-        FIRE_TIER_1,
-        FIRE_TIER_2,
-        FIRE_TIER_3,
-    }
-
-    public float fuelLoad;
-    public float fireAmount;
+    public int fuelLoad;
+    public int fireLevel;
+    public int tempFireLevel;
 
     public FireTruck fireTruck;
 }
