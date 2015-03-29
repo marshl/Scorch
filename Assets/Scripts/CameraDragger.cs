@@ -3,6 +3,9 @@ using System.Collections;
 
 public class CameraDragger : MonoBehaviour
 {
+    public SimManager simManager;
+    public TerrainManager terrainManager;
+
     private struct ScreenClick
     {
         public Vector3 cameraPosition;
@@ -12,12 +15,22 @@ public class CameraDragger : MonoBehaviour
     private ScreenClick lastClick = new ScreenClick();
 
     public float orthoZoomSpeed = 0.5f;        // The rate of change of the orthographic size in orthographic mode.
+    public float minimumZoom = 1.0f;
+    public float maximumZoom = 1.0f;
 
     public float rotationMultiplier = 1.0f;
     private Vector2 storedRotationLine = Vector2.zero;
     private float storedRotation = 0.0f;
 
-    void Update()
+    public Vector2 minPosition;
+    public Vector2 maxPosition;
+
+    private float mouseDownTimer = 0.0f;
+    public float clickDuration = 0.25f;
+    private Vector3 clickPosition;
+    public float clickRadius = 5.0f;
+
+    private void Update()
     {
         if ( Input.GetMouseButtonDown( 0 ) )
         {
@@ -29,10 +42,27 @@ public class CameraDragger : MonoBehaviour
         {
             Vector3 direction = this.camera.ScreenToWorldPoint( this.lastClick.inputPosition ) - this.camera.ScreenToWorldPoint( Input.mousePosition );
             this.transform.position = this.lastClick.cameraPosition + direction;
+
+            this.transform.position = new Vector3(
+                Mathf.Clamp( this.transform.position.x, this.minPosition.x, this.maxPosition.x ),
+                Mathf.Clamp( this.transform.position.y, this.minPosition.y, this.maxPosition.y ),
+                this.transform.position.z );
         }
 
+        this.minPosition.x = -terrainManager.scale + Screen.width / 200.0f;
+        this.maxPosition.x = terrainManager.scale * terrainManager.displayWidth * 2.0f -Screen.width / 200.0f;
+
+        this.minPosition.y = -terrainManager.scale - Screen.height / 200.0f;
+        this.maxPosition.y = terrainManager.scale * terrainManager.displayHeight * 2.0f - Screen.height / 200.0f;
+
+        this.minPosition = this.minPosition / this.camera.orthographicSize;
+
+
         float scroll = Input.GetAxis( "Mouse ScrollWheel" );
-        this.camera.orthographicSize -= scroll;
+        if ( scroll != 0.0f )
+        {
+            this.camera.orthographicSize = Mathf.Clamp( this.camera.orthographicSize - scroll, this.minimumZoom, this.maximumZoom );
+        }
 
         // If there are two touches on the device...
         if ( Input.touchCount == 2 )
@@ -57,36 +87,32 @@ public class CameraDragger : MonoBehaviour
 
             // Make sure the orthographic size never drops below zero.
             camera.orthographicSize = Mathf.Max( camera.orthographicSize, 0.1f );
-
-
-            /*Vector2 touchGap = touchZero.position - touchOne.position;
-            Vector2 gapDir = touchGap.normalized;
-            float dir0 = Vector2.Dot(gapDir, touchZero.deltaPosition);
-            float dir1 = Vector2.Dot(gapDir, touchOne.deltaPosition);
-
-            if ( dir0 < 0 && dir1 > 0 )
-            {
-                this.transform.Rotate(this.transform.forward, touchOne.deltaPosition.magnitude);
-            }
-            else if ( dir0 > 1 && dir1 < 0 )
-            {
-                this.transform.Rotate(this.transform.forward, -(touchOne.deltaPosition.magnitude) );
-            }*/
-
-            //Vector2 oldGap  = (touchZeroPrevPos - touchOnePrevPos).normalized;
-            /*Vector2 currentGap  = (touchZero.position - touchOne.position).normalized;
-            float d = Vector2.Dot( new Vector2(1,0), currentGap );
-
-            this.transform.rotation = Quaternion.Euler( 0, 0, d - this.storedRotation );
-            */
         }
-        /*else
+
+        if ( Input.GetMouseButton( 0 ) )
         {
-            this.storedRotation = this.transform.rotation.eulerAngles.z;
-        }*/
+            this.mouseDownTimer += Time.deltaTime;
+            this.clickPosition = Input.mousePosition;
+        }
 
-        // When the user initially puts two fingers on the screen, track that angle to measure against for rotation
+        if ( Input.GetMouseButtonUp( 0 ) )
+        {
+            if ( this.mouseDownTimer < this.clickDuration && (this.clickPosition - Input.mousePosition).magnitude < this.clickRadius )
+            {
+                this.OnMouseClickEvent();
+            }
+            this.mouseDownTimer = 0.0f;
+        }
+    }
 
+    private void OnMouseClickEvent()
+    {
+        Vector3 translatedPosition = this.camera.ScreenToWorldPoint( Input.mousePosition );
+        this.simManager.SelectTile( translatedPosition );
+    }
+
+    private void RotationInput()
+    {
         if ( Input.touchCount == 2 && this.storedRotationLine.magnitude > 0.0f )
         {
             Vector2 line = ( Input.GetTouch( 0 ).position - Input.GetTouch( 1 ).position ).normalized;
@@ -101,10 +127,5 @@ public class CameraDragger : MonoBehaviour
             this.storedRotationLine = ( Input.GetTouch( 0 ).position - Input.GetTouch( 1 ).position ).normalized;
             this.storedRotation = this.transform.rotation.eulerAngles.z;
         }
-    }
-
-    private void OnGUI()
-    {
-        GUI.Label( new Rect( 5, 5, 250, 50 ), this.storedRotationLine + " : " + this.storedRotation );
     }
 }

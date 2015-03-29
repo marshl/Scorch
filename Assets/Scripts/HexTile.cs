@@ -4,9 +4,20 @@ using System.Collections.Generic;
 
 public class HexTile : MonoBehaviour
 {
+    public GameObject highlightPrefab;
+    public GameObject fireOverlayPrefab;
+
     public int x;
     public int y;
 
+    public AStarNode astarNode;
+    public TerrainData terrainData;
+
+    public bool isHighlighted;
+    private GameObject highlightOverlayObj;
+
+    public Dictionary<TerrainData.FIRE_TIER, GameObject> fireOverlayMap;
+    public Dictionary<CELL_DIRECTION, HexTile> neighbourMap = new Dictionary<CELL_DIRECTION, HexTile>();
 
     public enum CELL_DIRECTION
     {
@@ -18,11 +29,34 @@ public class HexTile : MonoBehaviour
         NORTH_WEST,
     }
 
-    public Dictionary<CELL_DIRECTION, HexTile> neighbourMap = new Dictionary<CELL_DIRECTION, HexTile>();
-
-    public static Vector3 GetCentre( int _x, int _y, float _scale )
+    private void Awake()
     {
-        return new Vector3( GetWidth( _scale ) * ( _x - _y * 0.5f ), _scale * _y * 1.5f, 0.0f );
+        this.astarNode = new AStarNode( this );
+
+        this.SetupOverlays();
+    }
+
+    private void SetupOverlays()
+    {
+        this.highlightOverlayObj = GameObject.Instantiate( this.highlightPrefab, this.transform.position + new Vector3( 0.0f, 0.0f, -5.0f ), this.transform.rotation ) as GameObject;
+        this.highlightOverlayObj.SetActive( false );
+
+        this.fireOverlayMap = new Dictionary<TerrainData.FIRE_TIER, GameObject>();
+        this.AddFireOverlay( TerrainData.FIRE_TIER.FIRE_TIER_1, 1, 0.3f );
+        this.AddFireOverlay( TerrainData.FIRE_TIER.FIRE_TIER_2, 2, 0.5f );
+        this.AddFireOverlay( TerrainData.FIRE_TIER.FIRE_TIER_3, 3, 0.7f );
+    }
+
+    private void AddFireOverlay( TerrainData.FIRE_TIER _tier, int _offset, float _scale )
+    {
+        GameObject fireOverlay = GameObject.Instantiate( this.fireOverlayPrefab, this.transform.position + new Vector3( 0, 0, -_offset ), this.transform.rotation ) as GameObject;
+        fireOverlay.transform.localScale = Vector3.one * _scale;
+        this.fireOverlayMap.Add( _tier, fireOverlay );
+    }
+
+    public static Vector2 GetCentre( int _x, int _y, float _scale )
+    {
+        return new Vector2( GetWidth( _scale ) * ( _x - _y * 0.5f ), _scale * _y * 1.5f );
     }
 
     public static float GetWidth( float _scale )
@@ -30,94 +64,14 @@ public class HexTile : MonoBehaviour
         return _scale * Mathf.Sqrt( 3 );
     }
 
-    /*public class CubeCoord
+    public Vector2 GetNormalisedPosition()
     {
-        public int x;
-        public int y;
-        public int z;
+        return HexTile.GetCentre( this.x, this.y, 1.0f );
+    }
 
-        public CubeCoord()
-        {
-            this.x = this.y = this.z = 0;
-        }
-
-        public CubeCoord( int _x, int _y, int _z )
-        {
-            this.x = _x;
-            this.y = _y;
-            this.z = _z;
-        }
-
-        public CubeCoord( AxialCoord _c )
-        {
-            this.x = _c.q;
-            this.z = _c.r;
-            this.y = -_c.q - _c.r;
-        }
-
-        public CubeCoord FromDirection( CELL_DIRECTION _dir )
-        {
-            switch ( _dir )
-            {
-                case CELL_DIRECTION.EAST:
-                    return new CubeCoord( 1, 0, 0 );
-                case CELL_DIRECTION.WEST:
-                    return new CubeCoord( -1, 0, 0 );
-                case CELL_DIRECTION.NORTH_EAST:
-                    return new CubeCoord( 0, 1, 0 );
-                case CELL_DIRECTION.NORTH_WEST:
-                    return new CubeCoord( 1, -1, 0 );
-                case CELL_DIRECTION.SOUTH_EAST:
-                    return new CubeCoord( -1, 1, 0 );
-                case CELL_DIRECTION.SOUTH_WEST:
-                    return new CubeCoord( -1, -1, 0 );
-                default:
-                    throw new KeyNotFoundException();
-            }
-        }
-
-        /*public CubeCoord GetNeighbour( CELL_DIRECTION _dir )
-        {
-
-        }* /
-
-    }*/
-
-    public class AxialCoord
+    public void SetHighlight( bool _highlighted )
     {
-        public int q;
-        public int r;
-
-        public AxialCoord( int _q, int _r )
-        {
-            this.q = _q;
-            this.r = _r;
-        }
-
-        /*public static AxialCoord FromCubeCoord( CubeCoord _c )
-        {
-            return new AxialCoord( _c.x + _c.y, _c.z + _c.y );
-        }*/
-        
-        public AxialCoord AddDirection( CELL_DIRECTION _dir )
-        {
-            switch ( _dir )
-            {
-                case CELL_DIRECTION.EAST:
-                    return new AxialCoord( this.q + 1, this.r );
-                case CELL_DIRECTION.WEST:
-                    return new AxialCoord( this.q - 1, this.r );
-                case CELL_DIRECTION.NORTH_EAST:
-                    return new AxialCoord( this.q, this.r + 1 );
-                case CELL_DIRECTION.NORTH_WEST:
-                    return new AxialCoord( this.q - 1, this.r + 1 );
-                case CELL_DIRECTION.SOUTH_EAST:
-                    return new AxialCoord( this.q - 1, this.r - 1 );
-                case CELL_DIRECTION.SOUTH_WEST:
-                    return new AxialCoord( this.q, this.r - 1);
-                default:
-                    throw new KeyNotFoundException();
-            }
-        }
+        this.isHighlighted = _highlighted;
+        this.highlightOverlayObj.SetActive( _highlighted );
     }
 }

@@ -3,7 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 using System;
 
-public class HexTest : MonoBehaviour
+public class FireTruck : MonoBehaviour
 {
-   
+
 }
+

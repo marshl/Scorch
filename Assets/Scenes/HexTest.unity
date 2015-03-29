@@ -74,6 +74,50 @@ NavMeshSettings:
     widthInaccuracy: 16.666666
     heightInaccuracy: 10
   m_NavMesh: {fileID: 0}
+--- !u!1 &782112259
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 4
+  m_Component:
+  - 4: {fileID: 782112261}
+  - 114: {fileID: 782112260}
+  m_Layer: 0
+  m_Name: SimManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &782112260
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 782112259}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e8c0a3c8f8e92304aa0e74c28a259eee, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  terrainManager: {fileID: 2132202991}
+  selectedTile: {fileID: 0}
+  tile2: {fileID: 0}
+  b: 0
+  path: []
+--- !u!4 &782112261
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 782112259}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 17.7371979, y: 7.31765652, z: -2.66796875}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 2
 --- !u!1 &1601221845
 GameObject:
   m_ObjectHideFlags: 0
@@ -86,7 +130,6 @@ GameObject:
   - 92: {fileID: 1601221849}
   - 124: {fileID: 1601221848}
   - 81: {fileID: 1601221847}
-  - 114: {fileID: 1601221846}
   - 114: {fileID: 1601221852}
   m_Layer: 0
   m_Name: Main Camera
@@ -95,21 +138,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1601221846
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1601221845}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5a469de4de67f6e43b7035ecfcb24e75, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  displayWidth: 6
-  displayHeight: 6
-  scale: .5
-  hexagonPrefab: {fileID: 127464, guid: e308bde9b0a75c24381f8ce63a1ad104, type: 2}
 --- !u!81 &1601221847
 AudioListener:
   m_ObjectHideFlags: 0
@@ -186,5 +214,56 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0b97c7e325fd79c49be6553d52a6cd97, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  simManager: {fileID: 782112260}
+  terrainManager: {fileID: 2132202991}
   orthoZoomSpeed: .0250000004
+  minimumZoom: 1
+  maximumZoom: 5
   rotationMultiplier: 25
+  minPosition: {x: 0, y: 0}
+  maxPosition: {x: 0, y: 0}
+  clickDuration: .150000006
+  clickRadius: 5
+--- !u!1 &2132202990
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 4
+  m_Component:
+  - 4: {fileID: 2132202992}
+  - 114: {fileID: 2132202991}
+  m_Layer: 0
+  m_Name: TerrainManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &2132202991
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 2132202990}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5edf8cef318416e4a862b7873c7a523b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  displayWidth: 10
+  displayHeight: 10
+  scale: 1.27999997
+  hexagonPrefab: {fileID: 127464, guid: e308bde9b0a75c24381f8ce63a1ad104, type: 2}
+--- !u!4 &2132202992
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 2132202990}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 12.1470594, y: -.701970339, z: -2.66871023}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 1
