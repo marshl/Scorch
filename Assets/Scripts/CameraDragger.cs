@@ -14,7 +14,7 @@ public class CameraDragger : MonoBehaviour
 
     private ScreenClick lastClick = new ScreenClick();
 
-    public float orthoZoomSpeed = 0.5f;        // The rate of change of the orthographic size in orthographic mode.
+    public float orthoZoomSpeed = 0.5f;
     public float minimumZoom = 1.0f;
     public float maximumZoom = 1.0f;
 
@@ -42,21 +42,19 @@ public class CameraDragger : MonoBehaviour
         {
             Vector3 direction = this.camera.ScreenToWorldPoint( this.lastClick.inputPosition ) - this.camera.ScreenToWorldPoint( Input.mousePosition );
             this.transform.position = this.lastClick.cameraPosition + direction;
-
-            this.transform.position = new Vector3(
-                Mathf.Clamp( this.transform.position.x, this.minPosition.x, this.maxPosition.x ),
-                Mathf.Clamp( this.transform.position.y, this.minPosition.y, this.maxPosition.y ),
-                this.transform.position.z );
         }
 
-        this.minPosition.x = -terrainManager.scale + Screen.width / 200.0f;
-        this.maxPosition.x = terrainManager.scale * terrainManager.displayWidth * 2.0f -Screen.width / 200.0f;
+        this.minPosition = this.transform.position - this.camera.ViewportToWorldPoint( Vector3.zero )
+            + new Vector3( -HexTile.GetWidth( terrainManager.scale )/2, -terrainManager.scale/2, 0 );
 
-        this.minPosition.y = -terrainManager.scale - Screen.height / 200.0f;
-        this.maxPosition.y = terrainManager.scale * terrainManager.displayHeight * 2.0f - Screen.height / 200.0f;
+        this.maxPosition = (this.transform.position - this.camera.ViewportToWorldPoint( Vector3.one ) ) + 
+            new Vector3( HexTile.GetWidth( terrainManager.scale ) * (terrainManager.displayWidth - 1),
+                terrainManager.scale * (terrainManager.displayHeight - 0.75f) * 1.5f, 0.0f );
 
-        this.minPosition = this.minPosition / this.camera.orthographicSize;
-
+        this.transform.position = new Vector3(
+            Mathf.Clamp( this.transform.position.x, this.minPosition.x, this.maxPosition.x ),
+            Mathf.Clamp( this.transform.position.y, this.minPosition.y, this.maxPosition.y ),
+            this.transform.position.z );
 
         float scroll = Input.GetAxis( "Mouse ScrollWheel" );
         if ( scroll != 0.0f )
