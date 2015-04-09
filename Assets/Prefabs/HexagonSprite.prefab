@@ -42,8 +42,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0deeb6719b1bbcc4eb19d090770867c0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  tile: {fileID: 11488328}
   highlightPrefab: {fileID: 159406, guid: af865ab9ab940d24f91969000dc0c43d, type: 2}
   fireOverlayPrefab: {fileID: 105856, guid: 480ae26170cd5494a9b309b87793c07a, type: 2}
+  mediumFuelOverlayPrefab: {fileID: 176846, guid: 1d287db86d0cb3b4b840d912380ebcb2,
+    type: 2}
+  highFUleOverlayPrefab: {fileID: 122578, guid: 4503caea9b72cb0498a11a09a41db06a,
+    type: 2}
 --- !u!114 &11473726
 MonoBehaviour:
   m_ObjectHideFlags: 1

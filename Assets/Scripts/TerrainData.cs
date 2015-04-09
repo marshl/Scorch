@@ -12,7 +12,7 @@ public class TerrainData : MonoBehaviour
         FOREST,
     };
 
-    public int fuelLoad;
+    public float fuelLoad;
     public int fireLevel;
     public int tempFireLevel;
 

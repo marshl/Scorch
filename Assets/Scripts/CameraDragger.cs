@@ -44,18 +44,6 @@ public class CameraDragger : MonoBehaviour
             this.transform.position = this.lastClick.cameraPosition + direction;
         }
 
-        this.minPosition = this.transform.position - this.camera.ViewportToWorldPoint( Vector3.zero )
-            + new Vector3( -HexTile.GetWidth( terrainManager.scale )/2, -terrainManager.scale/2, 0 );
-
-        this.maxPosition = (this.transform.position - this.camera.ViewportToWorldPoint( Vector3.one ) ) + 
-            new Vector3( HexTile.GetWidth( terrainManager.scale ) * (terrainManager.displayWidth - 1),
-                terrainManager.scale * (terrainManager.displayHeight - 0.75f) * 1.5f, 0.0f );
-
-        this.transform.position = new Vector3(
-            Mathf.Clamp( this.transform.position.x, this.minPosition.x, this.maxPosition.x ),
-            Mathf.Clamp( this.transform.position.y, this.minPosition.y, this.maxPosition.y ),
-            this.transform.position.z );
-
         float scroll = Input.GetAxis( "Mouse ScrollWheel" );
         if ( scroll != 0.0f )
         {
@@ -101,6 +89,18 @@ public class CameraDragger : MonoBehaviour
             }
             this.mouseDownTimer = 0.0f;
         }
+
+        this.minPosition = this.transform.position - this.camera.ViewportToWorldPoint( Vector3.zero )
+           + new Vector3( -HexTile.GetWidth( terrainManager.scale ) / 2, -terrainManager.scale / 2, 0 );
+
+        this.maxPosition = ( this.transform.position - this.camera.ViewportToWorldPoint( Vector3.one ) ) +
+            new Vector3( HexTile.GetWidth( terrainManager.scale ) * ( terrainManager.displayWidth - 1 ),
+                terrainManager.scale * ( terrainManager.displayHeight - 0.75f ) * 1.5f, 0.0f );
+
+        this.transform.position = new Vector3(
+            Mathf.Clamp( this.transform.position.x, this.minPosition.x, this.maxPosition.x ),
+            Mathf.Clamp( this.transform.position.y, this.minPosition.y, this.maxPosition.y ),
+            this.transform.position.z );
     }
 
     private void OnGUI()

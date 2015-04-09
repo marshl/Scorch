@@ -4,3 +4,4 @@ Temp/
 Library/
 Builds/
 *.asset
+Assets/Scripts/LibNoise/

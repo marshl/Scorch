@@ -42,6 +42,24 @@ public class TerrainManager : MonoBehaviour {
 
         this.availableTiles = this.GetAvailableTiles();
         this.BuildNeighbourConnections();
+
+        LibNoise.Perlin perlin = new LibNoise.Perlin();
+        perlin.Frequency *= 5.0f;
+        Debug.Log( perlin.Frequency + " : " + perlin.Lacunarity + " : " + perlin.NoiseQuality + " : " + perlin.OctaveCount + " : " + perlin.Persistence + " : " + perlin.Seed );
+        perlin.Seed = UnityEngine.Random.Range( 0, 1000 );
+
+        float min = float.MaxValue;
+        float max = float.MinValue;
+        foreach ( HexTile tile in this.availableTiles )
+        {
+            tile.terrainData.fuelLoad = ((float)perlin.GetValue( (double)tile.x/(double)this.internalWidth, (double)tile.y/(double)this.displayHeight, 0.0 ) + 1.0f) / 2.0f;
+
+            tile.tileOverlay.SetFuelOverlay();
+            min = Mathf.Min( min, tile.terrainData.fuelLoad );
+            max = Mathf.Max( max, tile.terrainData.fuelLoad );
+            Debug.Log( tile.terrainData.fuelLoad );
+        }
+        Debug.Log( "Min: " + min + " max: " + max );
     }
 
     /*private void Update()
