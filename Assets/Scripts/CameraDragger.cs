@@ -40,14 +40,14 @@ public class CameraDragger : MonoBehaviour
 
         if ( Input.GetMouseButton( 0 ) )
         {
-            Vector3 direction = this.camera.ScreenToWorldPoint( this.lastClick.inputPosition ) - this.camera.ScreenToWorldPoint( Input.mousePosition );
+            Vector3 direction = this.GetComponent<Camera>().ScreenToWorldPoint( this.lastClick.inputPosition ) - this.GetComponent<Camera>().ScreenToWorldPoint( Input.mousePosition );
             this.transform.position = this.lastClick.cameraPosition + direction;
         }
 
         float scroll = Input.GetAxis( "Mouse ScrollWheel" );
         if ( scroll != 0.0f )
         {
-            this.camera.orthographicSize = Mathf.Clamp( this.camera.orthographicSize - scroll, this.minimumZoom, this.maximumZoom );
+            this.GetComponent<Camera>().orthographicSize = Mathf.Clamp( this.GetComponent<Camera>().orthographicSize - scroll, this.minimumZoom, this.maximumZoom );
         }
 
         // If there are two touches on the device...
@@ -69,10 +69,10 @@ public class CameraDragger : MonoBehaviour
             float deltaMagnitudeDiff = prevTouchDeltaMag - touchDeltaMag;
 
             // ... change the orthographic size based on the change in distance between the touches.
-            camera.orthographicSize += deltaMagnitudeDiff * orthoZoomSpeed;
+            GetComponent<Camera>().orthographicSize += deltaMagnitudeDiff * orthoZoomSpeed;
 
             // Make sure the orthographic size never drops below zero.
-            camera.orthographicSize = Mathf.Max( camera.orthographicSize, 0.1f );
+            GetComponent<Camera>().orthographicSize = Mathf.Max( GetComponent<Camera>().orthographicSize, 0.1f );
         }
 
         if ( Input.GetMouseButton( 0 ) )
@@ -90,10 +90,10 @@ public class CameraDragger : MonoBehaviour
             this.mouseDownTimer = 0.0f;
         }
 
-        this.minPosition = this.transform.position - this.camera.ViewportToWorldPoint( Vector3.zero )
+        this.minPosition = this.transform.position - this.GetComponent<Camera>().ViewportToWorldPoint( Vector3.zero )
            + new Vector3( -HexTile.GetWidth( terrainManager.scale ) / 2, -terrainManager.scale / 2, 0 );
 
-        this.maxPosition = ( this.transform.position - this.camera.ViewportToWorldPoint( Vector3.one ) ) +
+        this.maxPosition = ( this.transform.position - this.GetComponent<Camera>().ViewportToWorldPoint( Vector3.one ) ) +
             new Vector3( HexTile.GetWidth( terrainManager.scale ) * ( terrainManager.displayWidth - 1 ),
                 terrainManager.scale * ( terrainManager.displayHeight - 0.75f ) * 1.5f, 0.0f );
 
@@ -113,7 +113,7 @@ public class CameraDragger : MonoBehaviour
 
     private void OnMouseClickEvent()
     {
-        Vector3 translatedPosition = this.camera.ScreenToWorldPoint( Input.mousePosition );
+        Vector3 translatedPosition = this.GetComponent<Camera>().ScreenToWorldPoint( Input.mousePosition );
         this.simManager.SelectTile( translatedPosition );
     }
 
