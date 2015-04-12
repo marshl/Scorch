@@ -94,7 +94,6 @@ public class SimManager : MonoBehaviour
     public void IncreaseFireLevel( TerrainData _terrain )
     {
         _terrain.fireLevel = Mathf.Min( _terrain.fireLevel + 1, this.maximumInfernoStage );
-
         _terrain.hexTile.tileOverlay.SetFireOverlay( this.FireLevelToDisplayTier( _terrain.fireLevel ) );
     }
 

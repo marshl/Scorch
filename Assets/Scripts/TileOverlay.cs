@@ -6,20 +6,22 @@ public class TileOverlay : MonoBehaviour
 {
     public HexTile tile;
 
-    public GameObject highlightPrefab;
-    public GameObject fireOverlayPrefab;
+    public GameObject overlayPrefab;
 
-    public GameObject mediumFuelOverlayPrefab;
-    public GameObject highFUleOverlayPrefab;
+    public Sprite fireLowSprite;
+    public Sprite fireMedSprite;
+    public Sprite fireHighSprite;
 
-    private GameObject highlightOverlayObj;
+    public Sprite mediumFuelSprite;
+    public Sprite highFuelSprite;
 
-    private GameObject mediumFuelOverlayObj;
-    private GameObject highFuelOverlayObj;
+    public Sprite highlightSprite;
 
-    public Dictionary<FIRE_DISPLAY_TIER, GameObject> fireOverlayMap;
+    public GameObject highlightOverlayObj;
+    public GameObject fireOverlayObj;
+    public GameObject fuelOverlayObj;
 
-    public enum FIRE_DISPLAY_TIER
+    public enum FIRE_DISPLAY_TIER : int
     {
         NO_FIRE,
         FIRE_TIER_1,
@@ -27,40 +29,46 @@ public class TileOverlay : MonoBehaviour
         FIRE_TIER_3,
     }
 
+    public Dictionary<FIRE_DISPLAY_TIER, Sprite> fireOverlayMap;
+
     public void SetupOverlays()
     {
-        this.highlightOverlayObj = GameObject.Instantiate( this.highlightPrefab, this.transform.position + new Vector3( 0.0f, 0.0f, -5.0f ), this.transform.rotation ) as GameObject;
-        this.highlightOverlayObj.SetActive( false );
+        this.highlightOverlayObj = this.CreateOverlay( 0.5f );
+        this.highlightOverlayObj.GetComponent<SpriteRenderer>().sprite = this.highlightSprite;
 
-        this.fireOverlayMap = new Dictionary<FIRE_DISPLAY_TIER, GameObject>();
-        this.AddFireOverlay( FIRE_DISPLAY_TIER.FIRE_TIER_1, 1, 0.3f );
-        this.AddFireOverlay( FIRE_DISPLAY_TIER.FIRE_TIER_2, 2, 0.5f );
-        this.AddFireOverlay( FIRE_DISPLAY_TIER.FIRE_TIER_3, 3, 0.7f );
+        this.fireOverlayObj = this.CreateOverlay( 0.3f );
+        this.fireOverlayMap = new Dictionary<FIRE_DISPLAY_TIER, Sprite>();
+        this.fireOverlayMap.Add( FIRE_DISPLAY_TIER.FIRE_TIER_1, this.fireLowSprite );
+        this.fireOverlayMap.Add( FIRE_DISPLAY_TIER.FIRE_TIER_2, this.fireMedSprite );
+        this.fireOverlayMap.Add( FIRE_DISPLAY_TIER.FIRE_TIER_3, this.fireHighSprite );
 
-        this.mediumFuelOverlayObj = GameObject.Instantiate( this.mediumFuelOverlayPrefab, this.transform.position + new Vector3( 0.0f, 0.0f, -2.0f ), this.transform.rotation ) as GameObject;
-        this.mediumFuelOverlayObj.SetActive( false );
-
-        this.highFuelOverlayObj = GameObject.Instantiate( this.highFUleOverlayPrefab, this.transform.position + new Vector3( 0.0f, 0.0f, -3.0f ), this.transform.rotation ) as GameObject;
-        this.highFuelOverlayObj.SetActive( false );
+        this.fuelOverlayObj = this.CreateOverlay( 0.2f );
     }
 
-    private void AddFireOverlay( FIRE_DISPLAY_TIER _tier, int _offset, float _scale )
-    {
-        GameObject fireOverlay = GameObject.Instantiate( this.fireOverlayPrefab, this.transform.position + new Vector3( 0, 0, -_offset ), this.transform.rotation ) as GameObject;
-        fireOverlay.transform.localScale = Vector3.one * _scale;
-        this.fireOverlayMap.Add( _tier, fireOverlay );
-        fireOverlay.SetActive( false );
-    }
+	private GameObject CreateOverlay( float _level )
+	{
+        GameObject overlay = GameObject.Instantiate( this.overlayPrefab, this.transform.position, this.transform.rotation ) as GameObject;
+		overlay.transform.parent = this.transform;
+		overlay.transform.localPosition = new Vector3( 0.0f, 0.0f, -_level );
+        overlay.SetActive( false );
+		return overlay;
+	}
 
     public void SetFuelOverlay()
     {
         if ( this.tile.terrainData.fuelLoad > 0.4f && this.tile.terrainData.fuelLoad < 0.6f )
         {
-            this.mediumFuelOverlayObj.SetActive( true );
+            this.fuelOverlayObj.SetActive( true );
+            this.fuelOverlayObj.GetComponent<SpriteRenderer>().sprite = this.mediumFuelSprite;
         }
         else if ( this.tile.terrainData.fuelLoad >= 0.6f )
         {
-            this.highFuelOverlayObj.SetActive( true );
+            this.fuelOverlayObj.SetActive( true );
+            this.fuelOverlayObj.GetComponent<SpriteRenderer>().sprite = this.highFuelSprite;
+        }
+        else
+        {
+            this.fuelOverlayObj.SetActive( false );
         }
     }
 
@@ -71,9 +79,14 @@ public class TileOverlay : MonoBehaviour
 
     public void SetFireOverlay( FIRE_DISPLAY_TIER _tier )
     {
-        foreach ( KeyValuePair<FIRE_DISPLAY_TIER, GameObject> pair in this.fireOverlayMap )
+        if ( _tier == FIRE_DISPLAY_TIER.NO_FIRE )
         {
-            pair.Value.SetActive( pair.Key == _tier );
+            this.fireOverlayObj.SetActive( false );
+        }
+        else
+        {
+            this.fireOverlayObj.SetActive( true );
+            this.fireOverlayObj.GetComponent<SpriteRenderer>().sprite = this.fireOverlayMap[_tier];
         }
     }
 }

@@ -57,7 +57,6 @@ public class TerrainManager : MonoBehaviour {
             tile.tileOverlay.SetFuelOverlay();
             min = Mathf.Min( min, tile.terrainData.fuelLoad );
             max = Mathf.Max( max, tile.terrainData.fuelLoad );
-            Debug.Log( tile.terrainData.fuelLoad );
         }
         Debug.Log( "Min: " + min + " max: " + max );
     }
