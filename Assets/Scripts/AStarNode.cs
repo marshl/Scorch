@@ -13,17 +13,17 @@ public class AStarNode
 
     public bool isClosed;
 
-    public float GetFScore()
-    {
-        return this.costToThisPoint + this.distToDestinationNode;
-    }
-
     public AStarNode( HexTile _hexTile )
     {
         this.hextile = _hexTile;
     }
 
-    public void Prepare( AStarNode _endNode )
+    public float GetFScore()
+    {
+        return this.costToThisPoint + this.distToDestinationNode;
+    }
+
+    public void Initialise( AStarNode _endNode )
     {
         this.isClosed = false;
         this.costToThisPoint = 0.0f;

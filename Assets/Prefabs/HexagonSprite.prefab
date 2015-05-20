@@ -50,9 +50,6 @@ MonoBehaviour:
   mediumFuelSprite: {fileID: 21300000, guid: f4aea60afacad9e4da619d7423b64fec, type: 3}
   highFuelSprite: {fileID: 21300000, guid: 5a2c9033d28061b448383d8a407b3c12, type: 3}
   highlightSprite: {fileID: 21300000, guid: d2a54d30cdc54d94caa55e28733a8548, type: 3}
-  highlightOverlayObj: {fileID: 0}
-  fireOverlayObj: {fileID: 0}
-  fuelOverlayObj: {fileID: 0}
 --- !u!114 &11473726
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -68,7 +65,6 @@ MonoBehaviour:
   fuelLoad: 0
   fireLevel: 0
   tempFireLevel: 0
-  fireTruck: {fileID: 0}
 --- !u!114 &11488328
 MonoBehaviour:
   m_ObjectHideFlags: 1

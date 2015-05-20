@@ -11,9 +11,9 @@ public class HexTile : MonoBehaviour
     public TerrainData terrainData;
     public TileOverlay tileOverlay;
 
-    public Dictionary<CELL_DIRECTION, HexTile> neighbourMap = new Dictionary<CELL_DIRECTION, HexTile>();
+    public Dictionary<TILE_DIRECTION, HexTile> neighbourMap = new Dictionary<TILE_DIRECTION, HexTile>();
 
-    public enum CELL_DIRECTION
+    public enum TILE_DIRECTION
     {
         NORTH_EAST,
         EAST,
@@ -50,9 +50,9 @@ public class HexTile : MonoBehaviour
         this.tileOverlay.SetHighlight( _highlighted );
     }
 
-    public static CELL_DIRECTION GetRandomDirection()
+    public static TILE_DIRECTION GetRandomDirection()
     {
-        CELL_DIRECTION[] directions = (CELL_DIRECTION[])System.Enum.GetValues( typeof( CELL_DIRECTION ) );
+        TILE_DIRECTION[] directions = (TILE_DIRECTION[])System.Enum.GetValues( typeof( TILE_DIRECTION ) );
         return directions[Random.Range( 0, directions.Length )];
     }
 }

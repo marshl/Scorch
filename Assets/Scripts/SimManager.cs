@@ -4,9 +4,7 @@ using System.Collections.Generic;
 
 public class SimManager : MonoBehaviour
 {
-    public TerrainManager terrainManager;
-
-    public HexTile.CELL_DIRECTION? windDirection = null;
+    public HexTile.TILE_DIRECTION? windDirection = null;
     public int selfIgnitingStage;
     public int spreadableFireStage;
     public int maximumInfernoStage;
@@ -28,15 +26,15 @@ public class SimManager : MonoBehaviour
     {
         if ( b )
         {
-            this.selectedTile = this.terrainManager.GetTileClosestTo( _position );
+            this.selectedTile = GameManager.instance.terrainManager.GetTileClosestTo( _position );
         }
         else
         {
-            tile2 = this.terrainManager.GetTileClosestTo( _position );
+            tile2 = GameManager.instance.terrainManager.GetTileClosestTo( _position );
         }
         b = !b;
 
-        this.terrainManager.RemoveHighlights();
+        GameManager.instance.terrainManager.RemoveHighlights();
         if ( this.selectedTile != null )
         {
             this.selectedTile.SetHighlight( true );
@@ -44,7 +42,7 @@ public class SimManager : MonoBehaviour
 
         if ( this.selectedTile != null && this.tile2 != null )
         {
-            this.path = this.terrainManager.FindPath( this.selectedTile, this.tile2 );
+            this.path = GameManager.instance.terrainManager.FindPath( this.selectedTile, this.tile2 );
         }
 
         foreach ( HexTile tile in this.path )
@@ -55,10 +53,10 @@ public class SimManager : MonoBehaviour
 
     public void RunEnvironmentSimulation()
     {
-        int randIndex = Random.Range( 0, terrainManager.availableTiles.Count );
-        terrainManager.availableTiles[randIndex].terrainData.fireLevel++;
+        int randIndex = Random.Range( 0, GameManager.instance.terrainManager.availableTiles.Count );
+        GameManager.instance.terrainManager.availableTiles[randIndex].terrainData.fireLevel++;
 
-        foreach ( HexTile tile in terrainManager.availableTiles )
+        foreach ( HexTile tile in GameManager.instance.terrainManager.availableTiles )
         {
             TerrainData terrain = tile.terrainData;
             if ( this.IsTerrainPristine( terrain ) )
@@ -99,7 +97,7 @@ public class SimManager : MonoBehaviour
 
     public void SpreadFire( TerrainData _terrain )
     {
-        HexTile.CELL_DIRECTION windDirection = this.windDirection == null
+        HexTile.TILE_DIRECTION windDirection = this.windDirection == null
               ? HexTile.GetRandomDirection() : this.windDirection.Value;
 
         if ( !_terrain.hexTile.neighbourMap.ContainsKey( windDirection ) )

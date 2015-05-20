@@ -48,10 +48,11 @@
   <ItemGroup>
      <Compile Include="Assets\Scripts\AStarNode.cs" />
      <Compile Include="Assets\Scripts\AxialCoord.cs" />
-     <Compile Include="Assets\Scripts\CameraDragger.cs" />
      <Compile Include="Assets\Scripts\FireTruck.cs" />
-     <Compile Include="Assets\Scripts\HexTest.cs" />
+     <Compile Include="Assets\Scripts\FireTruckManager.cs" />
+     <Compile Include="Assets\Scripts\GameManager.cs" />
      <Compile Include="Assets\Scripts\HexTile.cs" />
+     <Compile Include="Assets\Scripts\InputManager.cs" />
      <Compile Include="Assets\Scripts\LibNoise\Billow.cs" />
      <Compile Include="Assets\Scripts\LibNoise\Checkerboard.cs" />
      <Compile Include="Assets\Scripts\LibNoise\Constant.cs" />

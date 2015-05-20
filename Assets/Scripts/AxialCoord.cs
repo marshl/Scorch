@@ -13,21 +13,21 @@ public class AxialCoord
         this.r = _r;
     }
 
-    public AxialCoord AddDirection( HexTile.CELL_DIRECTION _dir )
+    public AxialCoord AddDirection( HexTile.TILE_DIRECTION _dir )
     {
         switch ( _dir )
         {
-            case HexTile.CELL_DIRECTION.EAST:
+            case HexTile.TILE_DIRECTION.EAST:
                 return new AxialCoord( this.q + 1, this.r );
-            case HexTile.CELL_DIRECTION.WEST:
+            case HexTile.TILE_DIRECTION.WEST:
                 return new AxialCoord( this.q - 1, this.r );
-            case HexTile.CELL_DIRECTION.NORTH_EAST:
+            case HexTile.TILE_DIRECTION.NORTH_EAST:
                 return new AxialCoord( this.q + 1, this.r + 1 );
-            case HexTile.CELL_DIRECTION.NORTH_WEST:
+            case HexTile.TILE_DIRECTION.NORTH_WEST:
                 return new AxialCoord( this.q , this.r + 1 );
-            case HexTile.CELL_DIRECTION.SOUTH_EAST:
+            case HexTile.TILE_DIRECTION.SOUTH_EAST:
                 return new AxialCoord( this.q, this.r - 1 );
-            case HexTile.CELL_DIRECTION.SOUTH_WEST:
+            case HexTile.TILE_DIRECTION.SOUTH_WEST:
                 return new AxialCoord( this.q - 1, this.r - 1 );
             default:
                 throw new ArgumentException();

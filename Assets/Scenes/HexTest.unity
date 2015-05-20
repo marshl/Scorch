@@ -87,6 +87,88 @@ NavMeshSettings:
     cellSize: .166666657
     manualCellSize: 0
   m_NavMeshData: {fileID: 0}
+--- !u!1 &317062793
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 4
+  m_Component:
+  - 4: {fileID: 317062795}
+  - 114: {fileID: 317062794}
+  m_Layer: 0
+  m_Name: GameManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &317062794
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 317062793}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 823fe0ee34d6279459e9936d21b90eed, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  terrainManager: {fileID: 2132202991}
+  simManager: {fileID: 782112260}
+  fireTruckManager: {fileID: 601789659}
+--- !u!4 &317062795
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 317062793}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 5.29197073, y: 1.44341636, z: -1.56476593}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 4
+--- !u!1 &601789658
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 4
+  m_Component:
+  - 4: {fileID: 601789660}
+  - 114: {fileID: 601789659}
+  m_Layer: 0
+  m_Name: FireTruckManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &601789659
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 601789658}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 99a4d9baef94a424b922e2384d4deadf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  fireTruckPrefab: {fileID: 114304, guid: e4c1552e3fe3db84da8c2aad1659c205, type: 2}
+--- !u!4 &601789660
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 601789658}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: .300000012}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 3
 --- !u!1 &782112259
 GameObject:
   m_ObjectHideFlags: 0
@@ -114,7 +196,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e8c0a3c8f8e92304aa0e74c28a259eee, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  terrainManager: {fileID: 2132202991}
   selfIgnitingStage: 3
   spreadableFireStage: 6
   maximumInfernoStage: 10
@@ -227,7 +308,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1601221845}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0b97c7e325fd79c49be6553d52a6cd97, type: 3}
+  m_Script: {fileID: 11500000, guid: 5c52586e4d9b32d4089bfd6f70e309a5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   simManager: {fileID: 782112260}

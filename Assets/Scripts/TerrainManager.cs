@@ -11,31 +11,31 @@ public class TerrainManager : MonoBehaviour {
     private int internalWidth;
     public float scale;
 
-    public List<List<HexTile>> cellTable;
+    public List<List<HexTile>> tileTable;
 
     public GameObject hexagonPrefab;
 
     public List<HexTile> availableTiles;
 
-    private void Start()
+    public void Initiaiise()
     {
         this.internalWidth = ( displayWidth * 3 ) / 2;
-        this.cellTable = new List<List<HexTile>>( this.displayHeight );
+        this.tileTable = new List<List<HexTile>>( this.displayHeight );
 
         for ( int y = 0; y < this.displayHeight; ++y )
         {
-            this.cellTable.Add( new List<HexTile>( this.internalWidth ) );
+            this.tileTable.Add( new List<HexTile>( this.internalWidth ) );
 
             for ( int x = 0; x < this.internalWidth; ++x )
             {
-                if ( this.IsCellDisplayable( x, y ) )
+                if ( this.IsValidDisplayableTile( x, y ) )
                 {
-                    HexTile hex = this.CreateCell( x, y );
-                    this.cellTable[y].Add( hex );
+                    HexTile hex = this.CreateTile( x, y );
+                    this.tileTable[y].Add( hex );
                 }
                 else
                 {
-                    this.cellTable[y].Add( null );
+                    this.tileTable[y].Add( null );
                 }
             }
         }
@@ -69,7 +69,7 @@ public class TerrainManager : MonoBehaviour {
     }*/
 
 
-    public HexTile CreateCell( int _x, int _y )
+    private HexTile CreateTile( int _x, int _y )
     {
         GameObject hex = GameObject.Instantiate( this.hexagonPrefab, HexTile.GetCentre( _x, _y, this.scale ), Quaternion.identity ) as GameObject;
         hex.name = hex.name + "_" + _x + "_" + _y;
@@ -80,46 +80,46 @@ public class TerrainManager : MonoBehaviour {
         return tileScript;
     }
 
-    public HexTile GetCell( int _x, int _y )
+    public HexTile GetDisplayableTile( int _x, int _y )
     {
-        if ( !IsCellDisplayable( _x, _y ) )
+        if ( !IsValidDisplayableTile( _x, _y ) )
         {
-            throw new ArgumentException( "Invalid cell index: " + _x + " : " + _y );
+            throw new ArgumentException( "Invalid tile index: " + _x + " : " + _y );
         }
-        return this.cellTable[_y][_x];
+        return this.tileTable[_y][_x];
     }
 
-    public HexTile GetCellAxial( AxialCoord _c )
+    public HexTile GetTileAxial( AxialCoord _c )
     {
-        return this.GetCell( _c.q, _c.r );
+        return this.GetDisplayableTile( _c.q, _c.r );
     }
 
-    public bool IsCellDisplayable( int _x, int _y )
+    public bool IsValidDisplayableTile( int _x, int _y )
     {
         return _x - _y / 2 >= 0
             && _x - _y / 2 < this.displayWidth
-            && IsValidCellIndex( _x, _y );
+            && IsValidTileIndex( _x, _y );
     }
 
-    public bool IsValidCellIndex( int _x, int _y )
+    public bool IsValidTileIndex( int _x, int _y )
     {
         return _x >= 0 && _x < this.internalWidth
             && _y >= 0 && _y < this.displayHeight;
     }
 
-    public void BuildNeighbourConnections()
+    private void BuildNeighbourConnections()
     {
-        HexTile.CELL_DIRECTION[] directions = (HexTile.CELL_DIRECTION[])Enum.GetValues( typeof( HexTile.CELL_DIRECTION ) );
+        HexTile.TILE_DIRECTION[] directions = (HexTile.TILE_DIRECTION[])Enum.GetValues( typeof( HexTile.TILE_DIRECTION ) );
 
         foreach ( HexTile tile in this.availableTiles )
         {
-            foreach ( HexTile.CELL_DIRECTION dir in directions )
+            foreach ( HexTile.TILE_DIRECTION dir in directions )
             {
                 AxialCoord coord = new AxialCoord( tile.x, tile.y );
                 coord = coord.AddDirection( dir );
-                if ( this.IsCellDisplayable( coord.q, coord.r ) )
+                if ( this.IsValidDisplayableTile( coord.q, coord.r ) )
                 {
-                    tile.neighbourMap.Add( dir, this.GetCellAxial( coord ) );
+                    tile.neighbourMap.Add( dir, this.GetTileAxial( coord ) );
                 }
             }
         }
@@ -173,7 +173,7 @@ public class TerrainManager : MonoBehaviour {
             openSet.RemoveAt( 0 );
             currentNode.isClosed = true;
 		
-            foreach ( KeyValuePair<HexTile.CELL_DIRECTION, HexTile> pair in currentNode.hextile.neighbourMap )
+            foreach ( KeyValuePair<HexTile.TILE_DIRECTION, HexTile> pair in currentNode.hextile.neighbourMap )
 		    {
                 AStarNode neighbour = pair.Value.astarNode;
 
@@ -212,14 +212,11 @@ public class TerrainManager : MonoBehaviour {
         {
             for ( int x = 0; x < this.internalWidth; ++x )
             {
-                if ( !this.IsCellDisplayable( x, y ) )
+                if ( !this.IsValidDisplayableTile( x, y ) )
                     continue;
 
-                HexTile hex = this.GetCell( x, y );
-                if ( hex != null )
-                {
-                    list.Add( hex );
-                }
+                HexTile hex = this.tileTable[y][x];
+                list.Add( hex );
             }
         }
         return list;
@@ -229,7 +226,7 @@ public class TerrainManager : MonoBehaviour {
     {
         foreach ( HexTile tile in this.availableTiles )
         {
-            tile.astarNode.Prepare( _endNode );
+            tile.astarNode.Initialise( _endNode );
         }
     }
 

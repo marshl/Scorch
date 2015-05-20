@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class CameraDragger : MonoBehaviour
+public class InputManager : MonoBehaviour
 {
     public SimManager simManager;
     public TerrainManager terrainManager;

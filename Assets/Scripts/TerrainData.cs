@@ -15,6 +15,4 @@ public class TerrainData : MonoBehaviour
     public float fuelLoad;
     public int fireLevel;
     public int tempFireLevel;
-
-    public FireTruck fireTruck;
 }

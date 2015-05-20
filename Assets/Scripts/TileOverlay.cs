@@ -17,9 +17,9 @@ public class TileOverlay : MonoBehaviour
 
     public Sprite highlightSprite;
 
-    public GameObject highlightOverlayObj;
-    public GameObject fireOverlayObj;
-    public GameObject fuelOverlayObj;
+    private GameObject highlightOverlayObj;
+    private GameObject fireOverlayObj;
+    private GameObject fuelOverlayObj;
 
     public enum FIRE_DISPLAY_TIER : int
     {
@@ -89,4 +89,5 @@ public class TileOverlay : MonoBehaviour
             this.fireOverlayObj.GetComponent<SpriteRenderer>().sprite = this.fireOverlayMap[_tier];
         }
     }
+
 }
